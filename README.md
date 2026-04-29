@@ -2,6 +2,8 @@
 
 A MERN stack used-car resale marketplace adapted from a car rental app. Buyers can browse cars for sale, filter listings, review resale details, and send purchase enquiries with an offer price. Sellers can list cars, manage listing visibility, and respond to buyer enquiries from a dashboard.
 
+For deployment, see [DEPLOYMENT.md](./DEPLOYMENT.md).
+
 ## Features
 
 - Buyer-facing used-car search by location, make, model, category, fuel, transmission, and condition
@@ -66,7 +68,7 @@ In VS Code, use `Terminal -> Run Task...` and run:
 ## Project Structure
 
 ```text
-CarRental-fullstack/
+CarResale-fullstack/
   client/
     src/
       components/
@@ -91,6 +93,14 @@ JWT_SECRET=your_jwt_secret
 IMAGEKIT_PUBLIC_KEY=your_imagekit_public_key
 IMAGEKIT_PRIVATE_KEY=your_imagekit_private_key
 IMAGEKIT_URL_ENDPOINT=your_imagekit_url_endpoint
+ML_API_URL=http://127.0.0.1:8000
+CLIENT_URL=http://localhost:5173
+STRIPE_SECRET_KEY=your_stripe_secret_key
+SMTP_HOST=smtp.example.com
+SMTP_PORT=587
+SMTP_USER=your_smtp_user
+SMTP_PASS=your_smtp_password
+EMAIL_FROM=Car Resale <no-reply@example.com>
 PORT=3000
 ```
 
@@ -104,6 +114,7 @@ VITE_CURRENCY=$
 Notes:
 
 - MongoDB will create the database automatically on first connect. If your URI does not specify a database name, the app will use `car-resale`.
+- Car and profile image uploads are sent to ImageKit, which is safer for production than local disk storage.
 - This project uses JWT-based authentication and stores tokens in `localStorage`. It does not currently integrate Clerk.
 
 ## Run Locally

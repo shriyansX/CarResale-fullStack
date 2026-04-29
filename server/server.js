@@ -12,7 +12,7 @@ import newsletterRouter from "./routes/newsletterRoutes.js";
 const app = express();
 
 // DB
-await connectDB();
+await connectDB(process.env.MONGODB_URI);
 
 // Middleware
 app.use(cors({
@@ -23,6 +23,7 @@ app.use(express.json());
 
 // Test route
 app.get('/', (req, res) => res.send("Server is running"));
+app.get('/health', (req, res) => res.json({ success: true }));
 
 // Routes
 app.use('/api/user', userRouter);
@@ -30,9 +31,6 @@ app.use('/api/owner', ownerRouter);
 app.use('/api/inquiries', bookingRouter);
 app.use('/api/payment', paymentRouter);
 app.use("/api/newsletter", newsletterRouter);
-
-// Static
-app.use('/uploads', express.static('uploads'));
 
 // Start server
 const PORT = process.env.PORT || 3000;

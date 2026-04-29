@@ -253,7 +253,11 @@ const ManageCars = () => {
 
                 <td className='p-3 flex items-center gap-3'>
                   <img
-                    src={`${BASE_URL}${car.image}`}
+                    src={
+                      car.image?.startsWith('http')
+                        ? car.image
+                        : `${BASE_URL}${car.image}`
+                    }
                     alt="car"
                     className="h-12 w-12 object-cover rounded"
                   />

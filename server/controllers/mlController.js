@@ -1,8 +1,20 @@
-const ML_API_URL = process.env.ML_API_URL || "http://127.0.0.1:8000";
+const getMlApiUrl = () => {
+    const configuredUrl = process.env.ML_API_URL?.trim();
+
+    if (!configuredUrl) {
+        return "http://127.0.0.1:8000";
+    }
+
+    if (configuredUrl.startsWith("http://") || configuredUrl.startsWith("https://")) {
+        return configuredUrl;
+    }
+
+    return `http://${configuredUrl}`;
+};
 
 export const getMlHealth = async (req, res)=>{
     try {
-        const response = await fetch(`${ML_API_URL}/health`);
+        const response = await fetch(`${getMlApiUrl()}/health`);
         const data = await response.json();
         res.status(response.status).json(data);
     } catch (error) {
@@ -41,7 +53,7 @@ export const getMlHealth = async (req, res)=>{
 // }
 export const predictPrice = async (req, res)=>{
     try {
-        const response = await fetch(`${ML_API_URL}/predict`, {
+        const response = await fetch(`${getMlApiUrl()}/predict`, {
             method: "POST",
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify(req.body),
