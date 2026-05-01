@@ -4,42 +4,100 @@ import { assets } from '../../assets/assets'
 import { useAppContext } from '../../context/AppContext'
 import toast from 'react-hot-toast'
 
-const conditionOptions = ['New', 'Like New', 'Excellent', 'Good', 'Fair', 'Salvage']
-const titleOptions = ['Clean', 'Lien', 'Rebuilt', 'Salvage', 'Parts Only', 'Missing']
-const colorOptions = ['Black', 'White', 'Silver', 'Blue', 'Red', 'Gray', 'Green', 'Brown', 'Custom']
-const cylinderOptions = ['3 cylinders', '4 cylinders', '5 cylinders', '6 cylinders', '8 cylinders', '10 cylinders', '12 cylinders', 'Electric']
+const conditionOptions = ['new', 'excellent', 'good', 'fair', 'salvage']
 
-const fallbackEstimateResalePrice = (car)=>{
-  const age = Math.max(new Date().getFullYear() - Number(car.year || new Date().getFullYear()), 0)
+const titleOptions = ['clean', 'lien', 'rebuilt', 'salvage', 'parts only', 'missing']
+
+const colorOptions = ['black', 'white', 'silver', 'blue', 'red', 'gray', 'green', 'brown', 'custom']
+
+const cylinderOptions = [
+  '3 cylinders',
+  '4 cylinders',
+  '5 cylinders',
+  '6 cylinders',
+  '8 cylinders',
+  '10 cylinders',
+  '12 cylinders'
+]
+
+// const fallbackEstimateResalePrice = (car)=>{
+//   const age = Math.max(new Date().getFullYear() - Number(car.year || new Date().getFullYear()), 0)
+//   const mileage = Number(car.mileage || 0)
+//   const categoryBase = {
+//     Sedan: 14500,
+//     SUV: 22000,
+//     Van: 17500,
+//     Hatchback: 11500,
+//     Truck: 24000,
+//   }
+//   const conditionFactor = {
+//     New: 1.18,
+//     'Like New': 1.08,
+//     Excellent: 1,
+//     Good: 0.9,
+//     Fair: 0.72,
+//     Salvage: 0.45,
+//   }
+//   const fuelFactor = {
+//     Electric: 1.08,
+//     Hybrid: 1.04,
+//     Diesel: 0.96,
+//     Petrol: 1,
+//     Gas: 0.98,
+//   }
+//   const transmissionFactor = car.transmission === 'Automatic' ? 1.03 : 1
+//   const base = categoryBase[car.category] || 15000
+//   const ageFactor = Math.max(0.32, 1 - age * 0.055)
+//   const mileageFactor = Math.max(0.58, 1 - mileage / 400000)
+
+//   return Math.round(base * ageFactor * mileageFactor * (conditionFactor[car.condition] || 0.9) * (fuelFactor[car.fuel_type] || 1) * transmissionFactor)
+// }
+const fallbackEstimateResalePrice = (car) => {
+  const age = Math.max(
+    new Date().getFullYear() - Number(car.year || new Date().getFullYear()),
+    0
+  )
+
   const mileage = Number(car.mileage || 0)
+
   const categoryBase = {
-    Sedan: 14500,
-    SUV: 22000,
-    Van: 17500,
-    Hatchback: 11500,
-    Truck: 24000,
+    sedan: 14500,
+    suv: 22000,
+    van: 17500,
+    hatchback: 11500,
+    truck: 24000,
   }
+
   const conditionFactor = {
-    New: 1.18,
-    'Like New': 1.08,
-    Excellent: 1,
-    Good: 0.9,
-    Fair: 0.72,
-    Salvage: 0.45,
+    new: 1.18,
+    excellent: 1,
+    good: 0.9,
+    fair: 0.72,
+    salvage: 0.45,
   }
+
   const fuelFactor = {
-    Electric: 1.08,
-    Hybrid: 1.04,
-    Diesel: 0.96,
-    Petrol: 1,
-    Gas: 0.98,
+    gas: 1,
+    diesel: 0.96,
+    hybrid: 1.04,
+    electric: 1.08,
   }
-  const transmissionFactor = car.transmission === 'Automatic' ? 1.03 : 1
+
+  const transmissionFactor =
+    car.transmission === "automatic" ? 1.03 : 1
+
   const base = categoryBase[car.category] || 15000
   const ageFactor = Math.max(0.32, 1 - age * 0.055)
   const mileageFactor = Math.max(0.58, 1 - mileage / 400000)
 
-  return Math.round(base * ageFactor * mileageFactor * (conditionFactor[car.condition] || 0.9) * (fuelFactor[car.fuel_type] || 1) * transmissionFactor)
+  return Math.round(
+    base *
+      ageFactor *
+      mileageFactor *
+      (conditionFactor[car.condition] || 0.9) *
+      (fuelFactor[car.fuel_type] || 1) *
+      transmissionFactor
+  )
 }
 
 const AddCar = () => {
@@ -49,22 +107,22 @@ const AddCar = () => {
   const [image, setImage] = useState(null)
   const [isEstimating, setIsEstimating] = useState(false)
   const [car, setCar] = useState({
-    brand: '',
-    model: '',
-    year: '',
-    price: '',
-    category: '',
-    transmission: '',
-    fuel_type: '',
-    seating_capacity: '',
-    mileage: '',
-    condition: 'Good',
-    title_status: 'Clean',
-    cylinders: '',
-    paint_color: '',
-    location: '',
-    description: '',
-  })
+  brand: '',
+  model: '',
+  year: '',
+  price: '',
+  category: '',
+  transmission: 'automatic',
+  fuel_type: 'gas',
+  seating_capacity: '',
+  mileage: '',
+  condition: 'good',
+  title_status: 'clean',
+  cylinders: '',
+  paint_color: '',
+  location: '',
+  description: '',
+})
 
   const [isLoading, setIsLoading] = useState(false)
   const onSubmitHandler = async (e)=>{
@@ -83,22 +141,22 @@ const AddCar = () => {
         toast.success(data.message)
         setImage(null)
         setCar({
-          brand: '',
-          model: '',
-          year: '',
-          price: '',
-          category: '',
-          transmission: '',
-          fuel_type: '',
-          seating_capacity: '',
-          mileage: '',
-          condition: 'Good',
-          title_status: 'Clean',
-          cylinders: '',
-          paint_color: '',
-          location: '',
-          description: '',
-        })
+  brand: '',
+  model: '',
+  year: '',
+  price: '',
+  category: '',
+  transmission: 'automatic',
+  fuel_type: 'gas',
+  seating_capacity: '',
+  mileage: '',
+  condition: 'good',
+  title_status: 'clean',
+  cylinders: '',
+  paint_color: '',
+  location: '',
+  description: '',
+})
       }else{
         toast.error(data.message)
       }
@@ -191,11 +249,11 @@ const AddCar = () => {
             <label>Category</label>
             <select required onChange={e=> setCar({...car, category: e.target.value})} value={car.category} className='px-3 py-2 mt-1 border border-borderColor rounded-md outline-none'>
               <option value="">Select a category</option>
-              <option value="Sedan">Sedan</option>
-              <option value="SUV">SUV</option>
-              <option value="Van">Van</option>
-              <option value="Hatchback">Hatchback</option>
-              <option value="Truck">Truck</option>
+                    <option value="sedan">Sedan</option>
+<option value="suv">SUV</option>
+<option value="van">Van</option>
+<option value="hatchback">Hatchback</option>
+<option value="truck">Truck</option>
             </select>
           </div>
         </div>
@@ -224,20 +282,19 @@ const AddCar = () => {
             <label>Transmission</label>
             <select required onChange={e=> setCar({...car, transmission: e.target.value})} value={car.transmission} className='px-3 py-2 mt-1 border border-borderColor rounded-md outline-none'>
               <option value="">Select a transmission</option>
-              <option value="Automatic">Automatic</option>
-              <option value="Manual">Manual</option>
-              <option value="Semi-Automatic">Semi-Automatic</option>
+              <option value="automatic">Automatic</option>
+              <option value="manual">Manual</option>
+              <option value="other">Other</option>
             </select>
           </div>
           <div className='flex flex-col w-full'>
             <label>Fuel Type</label>
             <select required onChange={e=> setCar({...car, fuel_type: e.target.value})} value={car.fuel_type} className='px-3 py-2 mt-1 border border-borderColor rounded-md outline-none'>
               <option value="">Select a fuel type</option>
-              <option value="Gas">Gas</option>
-              <option value="Diesel">Diesel</option>
-              <option value="Petrol">Petrol</option>
-              <option value="Electric">Electric</option>
-              <option value="Hybrid">Hybrid</option>
+                <option value="gas">Gas</option>
+                <option value="diesel">Diesel</option>
+                <option value="electric">Electric</option>  
+                <option value="hybrid">Hybrid</option>
             </select>
           </div>
           <div className='flex flex-col w-full'>
@@ -265,10 +322,10 @@ const AddCar = () => {
             <label>Location</label>
             <select required onChange={e=> setCar({...car, location: e.target.value})} value={car.location} className='px-3 py-2 mt-1 border border-borderColor rounded-md outline-none'>
               <option value="">Select a location</option>
-              <option value="New York">New York</option>
-              <option value="Los Angeles">Los Angeles</option>
-              <option value="Houston">Houston</option>
-              <option value="Chicago">Chicago</option>
+             <option value="ny">New York</option>
+             <option value="ca">California</option>
+            <option value="tx">Texas</option>
+             <option value="il">Illinois</option>
             </select>
           </div>
         </div>
