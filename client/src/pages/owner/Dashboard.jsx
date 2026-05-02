@@ -141,7 +141,8 @@ import toast from 'react-hot-toast'
 
 const Dashboard = () => {
 
-  const { axios, isOwner, currency } = useAppContext()
+  const { axios, isOwner } = useAppContext()
+  const currency = import.meta.env.VITE_CURRENCY || "$"
 
   // ✅ NEW STATE (sales-based)
   const [data, setData] = useState({

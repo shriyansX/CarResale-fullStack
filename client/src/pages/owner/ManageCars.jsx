@@ -151,7 +151,8 @@ import toast from 'react-hot-toast'
 
 const ManageCars = () => {
 
-  const { BASE_URL, isOwner, axios, currency, fetchCars } = useAppContext()
+  const { BASE_URL, isOwner, axios, fetchCars } = useAppContext()
+  const currency = import.meta.env.VITE_CURRENCY || "$"
 
   const [cars, setCars] = useState([])
 

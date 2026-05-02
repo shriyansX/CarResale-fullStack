@@ -102,7 +102,8 @@ const fallbackEstimateResalePrice = (car) => {
 
 const AddCar = () => {
 
-  const {axios, currency} = useAppContext()
+  const {axios} = useAppContext()
+  const currency = import.meta.env.VITE_CURRENCY || "$"
 
   const [image, setImage] = useState(null)
   const [isEstimating, setIsEstimating] = useState(false)

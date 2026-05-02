@@ -7,9 +7,10 @@ import { motion } from 'motion/react'
 
 const MyBookings = () => {
 
-  const { axios, user, currency } = useAppContext()
+  const { axios, user } = useAppContext()
 
   const [inquiries, setInquiries] = useState([])
+  const currency = import.meta.env.VITE_CURRENCY || "$"
 
   const fetchMyInquiries = async ()=>{
     try {

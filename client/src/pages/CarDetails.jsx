@@ -10,13 +10,14 @@ const CarDetails = () => {
   const { id } = useParams()
   const navigate = useNavigate()
 
-  const { cars, axios, user, setShowLogin, currency } = useAppContext()
+  const { cars, axios, user, setShowLogin } = useAppContext()
 
   const [car, setCar] = useState(null)
   const [loading, setLoading] = useState(false)
   const [estimatedPrice, setEstimatedPrice] = useState(null)
   const [estimatedLoading, setEstimatedLoading] = useState(false)
 
+  const currency = import.meta.env.VITE_CURRENCY || "$"
   const BASE_URL = import.meta.env.VITE_BASE_URL || "http://localhost:3000"
 
   // ✅ GET CAR
